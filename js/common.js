@@ -1,0 +1,1 @@
+jQuery(document).ready(function($) {	if ($('div#himegoto-content').size() > 0) {		$("body").append("<div id='overlay'></div>");		 $("#overlay").fadeTo(500, 0.7);		 $("#kouchiku-danchi").fadeIn(500);		//$("#modalbox").fadeIn(500);		$("#overlay").click(function() {			$("#himegoto-content").fadeOut(500, function() {				$("#overlay").remove();			});		});	}});
