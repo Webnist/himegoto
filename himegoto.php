@@ -35,10 +35,6 @@ class Himegoto {
 
 		load_plugin_textdomain( HIMEGOTO_DOMAIN, false, $this->base_dir . '/languages/' );
 		if ( is_admin() ) {
-			add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
-			add_action( 'admin_print_scripts',  array( &$this, 'admin_print_scripts' ) );
-			add_action( 'admin_init', array( &$this, 'add_general_custom_fields' ) );
-			add_filter( 'admin_init', array( &$this, 'add_custom_whitelist_options_fields' ) );
 			add_action( 'init', array( &$this, 'create_initial_post_types' ) );
 		}
 		add_action( 'wp_footer', array( &$this, 'himegoto_content' ) );
@@ -72,66 +68,6 @@ class Himegoto {
 		);
 		register_post_type( 'himegoto', $args );
 
-	}
-
-	public function admin_menu() {
-		add_menu_page( __( 'Set Himegoto', HIMEGOTO_DOMAIN ), __( 'Set Himegoto', HIMEGOTO_DOMAIN ), 'add_users', $this->menu_slug, array( &$this, 'add_admin_edit_page' ) );
-	}
-
-	public function add_admin_edit_page() {
-		$title = __( 'Set Himegoto', HIMEGOTO_DOMAIN ); ?>
-		<div class="wrap">
-		<?php screen_icon(); ?>
-		<h2><?php echo esc_html( $title ); ?></h2>
-		<form method="post" action="options.php">
-		<?php settings_fields( $this->menu_slug ); ?>
-		<?php do_settings_sections( $this->menu_slug ); ?>
-		<table class="form-table">
-		<?php do_settings_fields( $this->menu_slug, 'default' ); ?>
-		</table>
-		<?php submit_button(); ?>
-		</form>
-		</div>
-	<?php }
-
-	public function admin_print_scripts() {
-		wp_enqueue_style( 'thickbox' );
-		wp_enqueue_script( 'thickbox' );
-		wp_enqueue_script( 'media-upload' );
-	}
-
-	public function add_general_custom_fields() {
-		add_settings_field( 'enabling', __( 'Enabling Himegoto', HIMEGOTO_DOMAIN ), array( &$this, 'enabling_field' ), $this->menu_slug, 'default' );
-		add_settings_field( 'search_query', __( 'Search Query', HIMEGOTO_DOMAIN ), array( &$this, 'allow_search_query_field' ), $this->menu_slug, 'default' );
-		add_settings_field( 'himegoto_content', __( 'Content', HIMEGOTO_DOMAIN ), array( &$this, 'himegoto_content_field' ), $this->menu_slug, 'default' );
-	}
-
-	public function enabling_field( $args ) {
-		extract( $args );
-		$value = get_option( 'himegoto_enabling' );
-?>
-		<label><input type="checkbox" name="himegoto_enabling" value="1" id="himegoto_enabling"<?php checked( 1, $value ); ?> /><?php _e( 'Enabling', HIMEGOTO_DOMAIN ); ?></label>
-	<?php
-	}
-
-	public function allow_search_query_field( $args ) {
-		extract( $args );
-		$value = get_option( 'search_query_title', __( 'Himegoto', HIMEGOTO_DOMAIN ) ); ?>
-		<label><input type="text" name="search_query_title" value="<?php echo $value; ?>" id="search_query_title" /></label>
-	<?php
-	}
-	public function himegoto_content_field( $args ) {
-		extract( $args );
-		$value = get_option( 'himegoto_content', '' );
-?>
-		<label><?php wp_editor( $value, 'himegoto_content' ); ?></label>
-	<?php
-	}
-
-	public function add_custom_whitelist_options_fields() {
-		register_setting( $this->menu_slug, 'himegoto_enabling' );
-		register_setting( $this->menu_slug, 'search_query_title' );
-		register_setting( $this->menu_slug, 'himegoto_content' );
 	}
 
 	public function search_himegoto_id() {
