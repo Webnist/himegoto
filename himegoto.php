@@ -2,7 +2,7 @@
 /*
   Plugin Name: Himegoto
   Plugin URI: http://plugins.webnist.net/
-  Description:
+  Description: Using the search form, displays the secret post.
   Version: 0.7.1.2
   Author: Webnist
   Author URI: http://webni.st
@@ -23,15 +23,9 @@ class Himegoto {
 
 	private $version = '0.1.7';
 	private $base_dir;
-	private $plugin_dir;
-	private $plugin_url;
-	private $menu_slug = 'himegoto';
 
 	public function __construct() {
 		$this->base_dir = dirname( plugin_basename( __FILE__ ) );
-		$this->plugin_dir = WP_PLUGIN_DIR . '/' . $this->base_dir;
-		$this->plugin_url = WP_PLUGIN_URL . '/' . $this->base_dir;
-		$this->menu_slug = 'himegoti';
 
 		load_plugin_textdomain( HIMEGOTO_DOMAIN, false, $this->base_dir . '/languages/' );
 		if ( is_admin() ) {
@@ -81,21 +75,22 @@ class Himegoto {
 	public function himegoto_scripts() {
 		$title = get_the_title( $this->search_himegoto_id() );
 		if ( !is_admin() && is_search() && get_search_query() == $title ) {
+				wp_enqueue_script( 'jquery-chuou', HIMEGOTO_PLUGIN_URL . '/js/jquery.chuou.min.js', array( 'jquery' ), '0.7.1.0', true );
 				wp_enqueue_script( 'himegoto-script', HIMEGOTO_PLUGIN_URL . '/js/common.min.js', array( 'jquery' ), '0.7.1.0', true );
-				wp_enqueue_style( 'himegoto-style', HIMEGOTO_PLUGIN_URL . '/style.css' , array(), '0.7.1.0' );
+				wp_enqueue_style( 'himegoto-style', HIMEGOTO_PLUGIN_URL . '/css/style.css' , array(), '0.7.1.0' );
 			}
-
 	}
+
 	public function himegoto_content() {
 		$id = $this->search_himegoto_id();
 		$title = get_the_title( $id );
+		$output = '';
 		if ( !is_admin() && is_search() && get_search_query() == $title ) {
 			$my_post = get_post( $id );
 			$content = $my_post->post_content;
 			$content = apply_filters('the_content', $content);
 			$content = str_replace(']]>', ']]&gt;', $content);
-			$output = '';
-			$output .= '<div id="himegoto-content">' . "\n";
+			$output .= '<div id="himegoto-content" class="entry-content">' . "\n";
 			$output .= $content;
 			$output .= '</div>' . "\n";
 			echo $output;
