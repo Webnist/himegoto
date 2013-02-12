@@ -3,13 +3,13 @@
   Plugin Name: Himegoto
   Plugin URI: http://plugins.webnist.net/
   Description: Using the search form, displays the secret post.
-  Version: 0.7.1.2
+  Version: 0.7.1.1
   Author: Webnist
   Author URI: http://webni.st
   License: GPLv2 or later
 */
 if ( !defined( 'HIMEGOTO_DOMAIN' ) )
-	define( 'HIMEGOTO_DOMAIN', 'kouchiku-danshi' );
+	define( 'HIMEGOTO_DOMAIN', 'himegoto' );
 
 if ( !defined( 'HIMEGOTO_PLUGIN_URL' ) )
 	define( 'HIMEGOTO_PLUGIN_URL', plugins_url() . '/' . dirname( plugin_basename( __FILE__ ) ) );
@@ -54,7 +54,7 @@ class Himegoto {
 			'show_ui' => true,
 			'show_in_nav_menus' => false,
 			'capability_type' => 'post',
-			'hierarchical' => true,
+			'hierarchical' => false,
 			'supports' => array( 'title', 'editor' ),
 			'rewrite' => false,
 			'query_var' => false,

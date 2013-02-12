@@ -4,7 +4,7 @@ Donate link:
 Tags: secret
 Requires at least: 3.4
 Tested up to: 3.4
-Stable tag: 0.7.1.0
+Stable tag: 0.7.1.1
 
 == Description ==
 秘密の投稿やキャンペーン等に使えるかもしれません。
