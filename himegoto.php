@@ -67,8 +67,12 @@ class Himegoto {
 	public function search_himegoto_id() {
 		global $wpdb;
 		$get_query = get_search_query();
-		$sql = "SELECT ID FROM {$wpdb->posts} WHERE post_title = '{$get_query}' AND post_status = 'publish' AND post_type = 'himegoto'";
-		$sql = (int) $wpdb->get_var( $wpdb->prepare( $sql ) );
+		$sql = (int) $wpdb->get_var( $wpdb->prepare("
+			SELECT ID FROM {$wpdb->posts}
+			WHERE post_title = %s
+			AND post_status = %s
+			AND post_type = %s",
+			$get_query, 'publish', 'himegoto' ) );
 		return $sql;
 	}
 
